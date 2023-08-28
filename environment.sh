@@ -25,6 +25,7 @@ if [ ! -d $DIRECTORY_NGINX ]; then
   fi
 fi
 
+BASE_URL='https://raw.githubusercontent.com/p21daniel'
 
 echo "##### Criando variáveis globais #####"
 PHP_STRING='php'
@@ -48,8 +49,8 @@ if [ ! -f .env ]; then
 
   echo "##### Baixando arquivo de configuração do projeto #####"
 
-  wget --no-check-certificate --no-cache --no-cookies --quiet https://raw.githubusercontent.com/p21sistemas/docker-ap/master/sample.env
-  wget --no-check-certificate --no-cache --no-cookies --quiet https://raw.githubusercontent.com/p21sistemas/docker-ap/master/proxy
+  wget --no-check-certificate --no-cache --no-cookies --quiet $BASE_URL/docker-ap/master/sample.env
+  wget --no-check-certificate --no-cache --no-cookies --quiet $BASE_URL/p21sistemas/docker-ap/master/proxy
 
   echo "##### Por favor informa o nome do projeto  Ex. sdt21_df #####"
   read ENV_PROJECT
@@ -114,10 +115,10 @@ if [ ! -f .env ]; then
   echo "CMD apachectl -D FOREGROUND" >> bin/webserver/Dockerfile
 
   echo "##### Baixando primeiros arquivos do projeto #####"
-  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/apache2/sites-enabled/default.conf https://raw.githubusercontent.com/p21sistemas/docker-ap/master/config/apache2/sites-enabled/default.conf
-  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/php.ini https://raw.githubusercontent.com/p21sistemas/docker-ap/master/config/php/php.ini
-  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/desenvolvimento.ini https://raw.githubusercontent.com/p21sistemas/docker-ap/master/config/php/desenvolvimento.ini
-  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/producao.ini https://raw.githubusercontent.com/p21sistemas/docker-ap/master/config/php/producao.ini
+  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/apache2/sites-enabled/default.conf $BASE_URL/docker-ap/master/config/apache2/sites-enabled/default.conf
+  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/php.ini $BASE_URL/docker-ap/master/config/php/php.ini
+  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/desenvolvimento.ini $BASE_URL/docker-ap/master/config/php/desenvolvimento.ini
+  wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/producao.ini $BASE_URL/docker-ap/master/config/php/producao.ini
 
   sed -i "s/ENV_APP/$ENV_APP/g" config/apache2/sites-enabled/default.conf
 
@@ -131,9 +132,9 @@ rm -f bin/webserver/.env bin/webserver/start.sh start.sh sample.env proxy
 rm -f bin/webserver/.env.* bin/webserver/start.sh.* start.sh.* sample.env.* proxy.* *.cron
 
 echo "##### Baixando arquivos essenciais #####"
-wget --no-check-certificate --no-cache --no-cookies --quiet -nc https://raw.githubusercontent.com/p21sistemas/docker-ap/master/docker-compose.yml
-wget --no-check-certificate --no-cache --no-cookies --quiet -nc https://raw.githubusercontent.com/p21sistemas/docker-ap/master/exec.sh && chmod +x exec.sh
-wget --no-check-certificate --no-cache --no-cookies --quiet -nc https://raw.githubusercontent.com/p21sistemas/docker-ap/master/start.sh && chmod +x start.sh
+wget --no-check-certificate --no-cache --no-cookies --quiet -nc $BASE_URL/docker-ap/master/docker-compose.yml
+wget --no-check-certificate --no-cache --no-cookies --quiet -nc $BASE_URL/docker-ap/master/exec.sh && chmod +x exec.sh
+wget --no-check-certificate --no-cache --no-cookies --quiet -nc $BASE_URL/docker-ap/master/start.sh && chmod +x start.sh
 
 PHP_ENV=$(read_var PHP_VERSION .env)
 
