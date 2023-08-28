@@ -46,7 +46,7 @@ if [ ! -f .env ]; then
     touch 'INICIAL.md'
     shopt -s dotglob
     mkdir www
-    mv !www www
+    mv ./^www www/
     if [ -d "www/docs" ]; then
       mv -f www/*.sh . && mkdir docs &&  mv -f www/docs docs
     fi
