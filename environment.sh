@@ -43,10 +43,10 @@ if [ ! -f .env ]; then
 
   if [ ! -d "www/" ]; then
     echo "##### Configuração inicial do projeto #####"
-    shopt -s dotglob;
-    mkdir --parents www/;
-    mv !(www) www;
-    if [-d "www/docs"]; then
+    shopt -s dotglob
+    mkdir www
+    mv '!(www)' www
+    if [ -d "www/docs"]; then
       mv -f www/*.sh . && mkdir docs &&  mv -f www/docs docs
     fi
   fi
