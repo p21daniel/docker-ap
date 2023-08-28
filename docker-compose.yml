@@ -28,7 +28,7 @@ services:
     volumes:
       - /data/redis:/data
     ports:
-      - ${REDIS_PORT}:6379
+      - ${REDIS}:6379
     networks:
       - container_default
 networks:
