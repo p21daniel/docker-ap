@@ -57,6 +57,9 @@ if [ ! -f .env ]; then
   echo "##### Por favor informa a porta em que o projeto vai estar externamente Ex. 8080 #####"
   read ENV_PORT
 
+  echo "##### Por favor informa a porta em que o redis vai estar externamente Ex. 6379 #####"
+  read REDIS_PORT
+
   echo "#####Qual o ambiente do projeto (desenvolvimento, teste ou producao) ? #####"
   read ENV_APP
 
@@ -82,6 +85,7 @@ if [ ! -f .env ]; then
 
   sed -i "s/ENV_PROJECT/$ENV_PROJECT$UNDERLINE/g" sample.env
   sed -i "s/ENV_PORT/$ENV_PORT/g" sample.env
+  sed -i "s/REDIS_PORT/$REDIS_PORT/g" sample.env
   sed -i "s/ENV_APP/$ENV_APP/g" sample.env
 
   echo "##### Criando pastas do projeto #####"

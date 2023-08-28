@@ -5,11 +5,13 @@ services:
       context: ./bin/webserver
     container_name: ${PROJECT_NAME}webserver
     image: ${PROJECT_NAME}webserver
+    restart: always
     ports:
-      - ${PORT}:80 # external_port:internal_port
+      - ${PORT}:80
     external_links:
-      - redis
       - mysql
+    links:
+      - redis
     networks:
       - container_default
     volumes:
@@ -18,6 +20,17 @@ services:
       - ${PHP_INI-./config/php/php.ini}:/etc/php/ENV_PHP_VERSION/apache2/conf.d/php.ini
       - ./config/php/${APP_ENV}.ini:/etc/php/ENV_PHP_VERSION/apache2/conf.d/${APP_ENV}.ini
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
+  redis:
+    build: ./bin/redis
+    container_name: ${PROJECT_NAME}redis
+    image: ${PROJECT_NAME}redis
+    restart: always
+    volumes:
+      - /data/redis:/data
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - container_default
 networks:
   container_default:
     external: true
