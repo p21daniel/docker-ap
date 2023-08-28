@@ -1,5 +1,5 @@
 #!/bin/bash
-
+shopt -s dotglob
 DIRECTORY_NGINX='/etc/nginx'
 
 #########################
@@ -44,9 +44,8 @@ if [ ! -f .env ]; then
   if [ ! -d "www/" ]; then
     echo "##### Configuração inicial do projeto #####"
     touch 'INICIAL.md'
-    shopt -s dotglob
     mkdir www
-    mv ./^www www/
+    mv !(www) www
     rm www/'INICIAL.md'
     if [ -d "www/docs" ]; then
       mv -f www/*.sh . && mkdir docs &&  mv -f www/docs docs
