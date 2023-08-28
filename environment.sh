@@ -120,6 +120,8 @@ if [ ! -f .env ]; then
   echo "RUN chmod +x /start.sh && bash /start.sh" >> bin/webserver/Dockerfile
   echo "CMD apachectl -D FOREGROUND" >> bin/webserver/Dockerfile
 
+  echo "FROM redis/latest" >> bin/redis/Dockerfile
+
   echo "##### Baixando primeiros arquivos do projeto #####"
   wget --no-check-certificate --no-cache --no-cookies --quiet -O config/apache2/sites-enabled/default.conf $BASE_URL/docker-ap/master/config/apache2/sites-enabled/default.conf
   wget --no-check-certificate --no-cache --no-cookies --quiet -O config/php/php.ini $BASE_URL/docker-ap/master/config/php/php.ini
@@ -130,7 +132,6 @@ if [ ! -f .env ]; then
 
   echo "##### Gerando arquivo .env #####"
   cp sample.env .env
-
 fi
 
 echo "##### Removendo arquivo de configuração residuais #####"
@@ -164,7 +165,6 @@ echo "##### Atualizando imagem #####"
 
 docker pull p21sistemas/ap:u$(read_var UBUNTU_VERSION .env)$PHP_STRING$(read_var PHP_VERSION .env)
 
-
 read -p  "##### Deseja ignorar o cache o fazer build? ? (y/N) #####" CACHE
 CACHE=${CACHE:-'N'}
 
@@ -186,21 +186,30 @@ rm -f bin/webserver/.env.* bin/webserver/start.sh.* start.sh.* sample.env.*
 
 echo "##### Alterando permissão de pastas #####"
 
-chown -R www-data:www-data './data'
-chown -R www-data:www-data './www/data'
-chown -R www-data:www-data './www/storage'
+if [ -d './data' ]; then
+  chown -R www-data:www-data './data'
+fi;
+
+if [ -d './www/data' ]; then
+  chown -R www-data:www-data './www/data'
+fi
+
+if [ -d './www/storage' ]; then
+  chown -R www-data:www-data './www/storage'
+fi
 
 echo '##### Acessando o ambiente e executando primeiros comandos #####'
 
 read -p "##### Deseja executar o composer ?  (y/N)?" RUN_COMPOSER
 RUN_COMPOSER=${RUN_COMPOSER:-'N'}
 MOD_COMPOSER=''
+
 if [ $(read_var APP_ENV .env) == 'producao' ]; then
-MOD_COMPOSER='--no-dev'
+  MOD_COMPOSER='--no-dev'
 fi
 
 if [ RUN_COMPOSER == 'y' ] || [ RUN_COMPOSER == 'Y' ]; then
-    docker exec -it $(read_var PROJECT_NAME .env)webserver php /usr/share/apache2/www/composer.phar install $MOD_COMPOSER -d /usr/share/apache2/www
+    docker exec -it $(read_var PROJECT_NAME .env)webserver cd /usr/share/apache2/www/ && php composer.phar install $MOD_COMPOSER
 fi
 
 
