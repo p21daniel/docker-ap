@@ -97,6 +97,7 @@ if [ ! -f .env ]; then
 
   echo "##### Criando pastas do projeto #####"
   mkdir -p bin/webserver
+  mkdir -p bin/redis
   mkdir -p config/apache2/sites-enabled
   mkdir -p config/php
   mkdir -p logs/apache2
@@ -120,7 +121,7 @@ if [ ! -f .env ]; then
   echo "RUN chmod +x /start.sh && bash /start.sh" >> bin/webserver/Dockerfile
   echo "CMD apachectl -D FOREGROUND" >> bin/webserver/Dockerfile
 
-  echo "FROM redis/latest" >> bin/redis/Dockerfile
+  echo "FROM redis:latest" >> bin/redis/Dockerfile
 
   echo "##### Baixando primeiros arquivos do projeto #####"
   wget --no-check-certificate --no-cache --no-cookies --quiet -O config/apache2/sites-enabled/default.conf $BASE_URL/docker-ap/master/config/apache2/sites-enabled/default.conf
