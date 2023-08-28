@@ -43,6 +43,7 @@ if [ ! -f .env ]; then
 
   if [ ! -d "www/" ]; then
     echo "##### Configuração inicial do projeto #####"
+    touch 'INICIAL.md'
     shopt -s dotglob
     mkdir www
     mv !www www
